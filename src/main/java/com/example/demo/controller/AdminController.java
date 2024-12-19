@@ -1,8 +1,12 @@
 package com.example.demo.controller;
 
 import com.example.demo.dto.ReportRequestDto;
+import com.example.demo.entity.User;
 import com.example.demo.service.AdminService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/admins")
@@ -14,7 +18,9 @@ public class AdminController {
     }
 
     @PostMapping("/report-users")
-    public void reportUsers(@RequestBody ReportRequestDto reportRequestDto) {
-        adminService.reportUsers(reportRequestDto.getUserIds());
+    public ResponseEntity<List<User>> reportUsers(@RequestBody ReportRequestDto reportRequestDto) {
+        List<User> users = adminService.reportUsers(reportRequestDto.getUserIds());
+
+        return ResponseEntity.ok().body(users); // 7-2 응답 데이터 타입 변경
     }
 }

@@ -28,4 +28,14 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
             @Param("startAt") LocalDateTime startAt,
             @Param("endAt") LocalDateTime endAt
     );
+
+
+    // 새로 추가한 부분, 4. db접근 최소화
+    @Query("SELECT r FROM Reservation r JOIN FETCH r.user JOIN FETCH r.item")
+    List<Reservation> findAllReservationWithUserAndItem();
+
+    // 7-3 default 메소드로 선언
+    default Reservation findByIdOrThrow(Long id) {
+        return findById(id).orElseThrow(() -> new IllegalArgumentException("해당 ID에 맞는 값이 존재하지 않습니다."));
+    }
 }

@@ -17,13 +17,14 @@ public class AdminService {
 
     // TODO: 4. find or save 예제 개선
     @Transactional
-    public void reportUsers(List<Long> userIds) {
-        for (Long userId : userIds) {
-            User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("해당 ID에 맞는 값이 존재하지 않습니다."));
+    public List<User> reportUsers(List<Long> userIds) {
+        List<User> users = userRepository.findAllById(userIds); // 유저리스트를 받기
 
+        // 전부 업데이트
+        for (User user : users) {
             user.updateStatusToBlocked();
-
-            userRepository.save(user);
         }
+
+        return userRepository.saveAll(users); // 한번에 저장
     }
 }

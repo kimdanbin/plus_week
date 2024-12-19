@@ -7,4 +7,9 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
     User findByEmail(String email);
+
+    // 7-3 default 메소드로 선언
+    default User findByIdOrElseThrow(Long id) {
+        return findById(id).orElseThrow(() -> new IllegalArgumentException("해당 ID에 맞는 값이 존재하지 않습니다."));
+    }
 }
